@@ -38,8 +38,8 @@ A multi-purpose AI agent built with LangGraph and Google's Gemini AI that combin
    - Pull the embedding model: `ollama pull mxbai-embed-large`
 
 3. **API Key Configuration**:
-   - Get a Google Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - Set your API key in the notebook environment
+   - Get a Google Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey)
+   - Set your api key in the .env file
 
 4. **Initialize RAG System**:
    - Run `rag.ipynb` to process PDF documents and generate embeddings
