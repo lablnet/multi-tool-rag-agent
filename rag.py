@@ -28,7 +28,10 @@ class SimplePDFProcessor:
         Extract text from PDF using PyMuPDF (fitz)
         """
         try:
+            # Open the PDF file
             doc = fitz.open(self.pdf_path)
+            
+            # Extract text from each page
             text = ""
             for page_num in range(len(doc)):
                 page = doc.load_page(page_num)
@@ -71,6 +74,8 @@ class IntelligentTextSplitter:
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
             length_function=len,
+            # separators are the characters that will be used to split the text into chunks
+            # We using these separators to split the text into chunks
             separators=["\n\n", "\n", ". ", "! ", "? ", "; ", ", ", " ", ""]
         )
 
@@ -84,7 +89,8 @@ class IntelligentTextSplitter:
         processed_chunks = []
         for chunk in chunks:
             chunk = chunk.strip()
-            if len(chunk) > 50:  # Only keep substantial chunks
+            # Only keep substantial chunks
+            if len(chunk) > 50:
                 processed_chunks.append(chunk)
 
         return processed_chunks
@@ -94,6 +100,7 @@ class IntelligentTextSplitter:
         Create Document objects with metadata for each chunk
         """
         documents = []
+        # Create Document objects with metadata for each chunk
         for i, chunk in enumerate(chunks):
             doc = Document(
                 page_content=chunk,
@@ -133,6 +140,7 @@ class OllamaEmbeddingGenerator:
                 prompt=text
             )
 
+            # Get the embedding from the response
             embedding = response['embedding']
 
             # Cache the result
@@ -153,12 +161,15 @@ class OllamaEmbeddingGenerator:
 
         print(f"🔄 Generating embeddings for {total_texts} texts...")
 
+        # Generate embeddings for multiple texts in batches
         for i in range(0, total_texts, batch_size):
             batch = texts[i:i + batch_size]
             batch_embeddings = []
 
             for text in batch:
+                # Generate embedding for each text
                 embedding = self.generate_embedding(text)
+                # Append the embedding to the batch embeddings
                 batch_embeddings.append(embedding)
 
             embeddings.extend(batch_embeddings)
@@ -181,6 +192,7 @@ class OllamaEmbeddingGenerator:
             'model_name': self.model_name
         }
 
+        # Save the embeddings and texts to disk
         with open(filename, 'w') as f:
             json.dump(data, f)
 
@@ -191,6 +203,7 @@ class OllamaEmbeddingGenerator:
         Load embeddings from disk
         """
         try:
+            # Load the embeddings and texts from disk
             with open(filename, 'r') as f:
                 data = json.load(f)
             print(f"📂 Embeddings loaded from {filename}")
@@ -205,6 +218,7 @@ class SimpleVectorSearch:
     """
 
     def __init__(self, embeddings, texts):
+        # Initialize the embeddings and texts
         self.embeddings = np.array(embeddings)
         self.texts = texts
         print(f"✅ Vector search initialized with {len(embeddings)} documents")
@@ -220,7 +234,9 @@ class SimpleVectorSearch:
         top_indices = np.argsort(similarities)[::-1][:top_k]
 
         results = []
+        # Get the top-k most similar documents
         for idx in top_indices:
+            # Append the text, similarity, and index to the results
             results.append({
                 'text': self.texts[idx],
                 'similarity': similarities[idx],
