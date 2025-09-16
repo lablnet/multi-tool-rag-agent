@@ -29,8 +29,12 @@ A multi-purpose AI agent built with LangGraph and Google's Gemini AI that combin
 
 1. **Install Dependencies**:
    ```bash
+   # Core dependencies
    pip install ollama PyMuPDF langchain langchain-community scikit-learn
    pip install langgraph langchain-google-genai geopy requests
+   
+   # Additional dependencies for Gemini function calling agent
+   pip install google-generativeai python-dotenv
    ```
 
 2. **Install Ollama**:
@@ -46,12 +50,30 @@ A multi-purpose AI agent built with LangGraph and Google's Gemini AI that combin
    - This creates the knowledge base for semantic search
 
 5. **Run the Agent**:
-   - Open `agent.ipynb` in Jupyter Notebook or JupyterLab
-   - Execute all cells to initialize the multi-tool agent
+   - **LangGraph Agent**: Open `agent.ipynb` in Jupyter Notebook or JupyterLab and execute all cells
+   - **Gemini Function Calling Agent**: Open `gemini_agent.ipynb` in Jupyter Notebook or JupyterLab and execute all cells
+
+## Agent Implementations
+
+This project includes two different agent implementations:
+
+### 1. LangGraph Agent (`agent.ipynb`)
+- **Framework**: Uses LangGraph for agent orchestration
+- **Pattern**: Implements ReAct (Reasoning and Acting) pattern
+- **Features**: Multi-step reasoning, tool selection, and conversation management
+- **Best for**: Complex multi-step tasks requiring reasoning chains
+
+### 2. Gemini Function Calling Agent (`gemini_agent.ipynb`)
+- **Framework**: Native Google Gemini function calling
+- **Pattern**: Direct function calling without external agent frameworks
+- **Features**: Simpler implementation, faster execution, built-in conversation history
+- **Best for**: Direct tool usage with minimal overhead
+
+Both agents provide the same functionality but use different approaches to demonstrate that we can build the agent without using any agentic framework like LangGraph or LangChain.
 
 ## Usage
 
-The agent can respond to natural language queries like:
+The agents can respond to natural language queries like:
 
 ### Weather Queries
 - "What's the weather in Islamabad?"
@@ -71,9 +93,12 @@ The agent can respond to natural language queries like:
 
 ## Project Structure
 
-- `agent.ipynb`: Main notebook containing the multi-tool agent implementation
+- `agent.ipynb`: Main notebook containing the multi-tool agent implementation using LangGraph
+- `gemini_agent.ipynb`: **NEW!** Function calling agent implementation using Google Gemini AI with native function calling capabilities
 - `rag.ipynb`: RAG system notebook for processing PDF documents and generating embeddings
 - `rag.py`: Core RAG implementation with PDF processing, text splitting, and vector search
+- `tools.py`: Utility functions for weather, cryptocurrency, and knowledge base operations
+- `prompt.py`: System prompts and instructions for the AI agents
 - `hec_outline.pdf`: Educational document (Pakistan Universities curriculum outline)
 - `hec_outline_embeddings.json`: Pre-generated embeddings for the knowledge base
 - `README.md`: This documentation file
@@ -109,10 +134,9 @@ This project is designed for educational and learning purposes to demonstrate:
 - [x] **RAG System**: Document processing and semantic search implementation
 - [x] **Multi-Tool Agent**: Weather, cryptocurrency, and knowledge base tools
 - [x] **Agent Framework**: LangGraph-based agent with ReAct pattern
+- [x] **Function Calling Agent**: Native Google Gemini function calling implementation
 
 ### 🚀 Advanced Features to Implement
-#### Agent using function calling
-- [ ] **Agent using function calling**: Agent that can use function calling to perform tasks without using any agentic framework like LangGraph or LangChain.
 
 #### Multi-Agent Systems
 - [ ] **Agent Collaboration**: Multiple specialized agents working together
